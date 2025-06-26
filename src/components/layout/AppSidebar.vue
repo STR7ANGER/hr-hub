@@ -19,13 +19,10 @@
       </div>
     </div>
 
-    
-
     <!-- Navigation -->
     <div class="flex-1 px-4 space-y-4 mt-2">
       <!-- Menu Items -->
       <nav class="space-y-1">
-
         <div class="sidebar-item">
           <Search class="w-5 h-5 text-gray-500"/>
           <span class="text-sm text-gray-700 font-medium">Search</span>
@@ -59,29 +56,27 @@
           <h3 class="text-sm font-medium text-gray-900">Shared Pages</h3>
           <ChevronDown class="w-4 h-4 text-gray-400" />
         </div>
-        <div class="space-y-1">
-          <div class="sidebar-item group bg-white rounded-lg border border-gray-100">
-            <GripVertical class="w-4 h-4 text-gray-300 group-hover:text-gray-400" />
-            <div class="w-4 h-4 bg-pink-500 rounded flex items-center justify-center">
-              <div class="w-2 h-2 bg-white rounded-sm"></div>
-            </div>
-            <span class="text-sm text-gray-700 font-medium">HR Tasks Hub</span>
+        
+        
+        <VueDraggable 
+          v-model="sharedPages" 
+          :animation="150"
+          ghost-class="ghost-item"
+          chosen-class="chosen-item"
+          drag-class="drag-item"
+          class="space-y-2"
+        >
+          <div 
+            v-for="item in sharedPages" 
+            :key="item.id"
+            class="flex items-center p-2 bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 cursor-move group"
+          >
+            <GripVertical class="w-4 h-4 text-gray-400 mr-2 group-hover:text-gray-600" />
+            <span class="text-lg mr-2">{{ item.emoji }}</span>
+            <span class="flex-1 text-sm text-gray-700">{{ item.name }}</span>
+            <MoreHorizontal class="w-4 h-4 text-gray-400 opacity-0 group-hover:opacity-100 transition-opacity" />
           </div>
-          
-          <div class="sidebar-item group bg-white rounded-lg border border-gray-100">
-            <GripVertical class="w-4 h-4 text-gray-300 group-hover:text-gray-400" />
-            <Wind class="w-4 h-4 text-green-500" />
-            <span class="text-sm text-gray-700 font-medium">Windah Comp</span>
-          </div>
-          
-          <div class="sidebar-item group bg-white rounded-lg border border-gray-100">
-            <GripVertical class="w-4 h-4 text-gray-300 group-hover:text-gray-400" />
-            <div class="w-4 h-4 bg-yellow-500 rounded-full flex items-center justify-center">
-              <div class="w-1.5 h-1.5 bg-white rounded-full"></div>
-            </div>
-            <span class="text-sm text-gray-700 font-medium">NoSpace Dev</span>
-          </div>
-        </div>
+        </VueDraggable>
       </div>
 
       <!-- Private Pages -->
@@ -150,12 +145,38 @@
 <script setup>
 import { 
   Star, ChevronLeft, Search, Bot, Mail, Calendar, Settings, 
-  ChevronDown, Plus, MoreHorizontal, Wind, GripVertical 
+  ChevronDown, Plus, MoreHorizontal, GripVertical 
 } from 'lucide-vue-next'
+import { ref } from 'vue'
+import { VueDraggable } from 'vue-draggable-plus'
+
+// Reactive data
+const sharedPages = ref([
+  { id: 1, name: "HR Task Hub" },
+  { id: 2, name: "Windah Comp" },
+  { id: 3, name: "NoSpace Dev" },
+])
+
+
+
+
 </script>
 
 <style scoped>
 .sidebar-item {
   @apply flex items-center space-x-3 px-3 py-2.5 rounded-lg hover:bg-gray-100 cursor-pointer transition-all duration-200;
+}
+
+/* Drag and drop styles */
+.ghost-item {
+  @apply opacity-50 bg-blue-50 border-blue-300 transform rotate-3;
+}
+
+.chosen-item {
+  @apply ring-2 ring-blue-400 ring-opacity-50;
+}
+
+.drag-item {
+  @apply transform rotate-2 shadow-lg;
 }
 </style>
